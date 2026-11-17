@@ -100,6 +100,8 @@ All `/v1/*` endpoints require the header: `X-API-Key: fde-tcg-dev-key-2026` (con
 
 ---
 
+---
+
 ## Live Execution & Verification Output
 
 ### 1. Automated CI Checks (`ruff` + `pytest`)
@@ -116,7 +118,7 @@ tests/test_api.py::test_health_endpoint PASSED                           [ 33%]
 tests/test_api.py::test_unauthorized_request_blocked PASSED              [ 66%]
 tests/test_api.py::test_validator_quarantines_corrupt_pokemon_cards PASSED [100%]
 
-============================== 3 passed in 0.97s ==============================
+============================== 3 passed in 0.92s ==============================
 ```
 ---
 
