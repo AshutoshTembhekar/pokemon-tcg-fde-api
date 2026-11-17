@@ -59,20 +59,19 @@ A production-grade **Forward-Deployed Data Engineering (FDE)** microservice buil
 
 ```text
 pokemon-tcg-fde-api/
-├── .github/workflows/
-│   └── ci.yaml                                   # Automated Ruff lint + Pytest CI pipeline
+├── .github/workflows/ci.yaml      # Ruff lint & Pytest CI
 ├── data/
-│   ├── raw/                                      # Upstream JSON snapshots for offline resilience
-│   └── processed/                                # Validated Apache Parquet files & quarantine log
+│   ├── raw/                       # Upstream JSON snapshots
+│   └── processed/                 # Clean Parquet & quarantine log
 ├── postman/
-│   ├── Local_Dev.postman_environment.json        # Local environment variables (base_url, api_key)
-│   └── Pokemon_TCG_FDE.postman_collection.json   # 6-request test suite with JS assertions
+│   ├── Local_Dev.postman_environment.json
+│   └── Pokemon_TCG_FDE.postman_collection.json
 ├── src/
-│   ├── api.py                                    # FastAPI routes, X-API-Key auth & Parquet queries
-│   ├── connector.py                              # Async TCGdex REST ingestion client
-│   └── validator.py                              # Pydantic v2 models, feature engineering & quarantine
+│   ├── api.py                     # FastAPI routes & X-API-Key auth
+│   ├── connector.py               # Async TCGdex REST client
+│   └── validator.py               # Pydantic v2 validation & quarantine
 ├── tests/
-│   └── test_api.py                               # Pytest endpoint, security & quarantine tests
+│   └── test_api.py                # Unit & integration test suite
 ├── .gitignore
 ├── README.md
 └── requirements.txt
