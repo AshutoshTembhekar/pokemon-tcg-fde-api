@@ -12,35 +12,24 @@ A production-grade **Forward-Deployed Data Engineering (FDE)** microservice buil
 
 ## System Architecture
 
-```text
-+-----------------------+       Async HTTPX        +-------------------------+
-|   TCGdex REST API     | -----------------------> |   Ingestion Connector   |
-| (api.tcgdex.net/v2)   |                          |   (src/connector.py)    |
-+-----------------------+                          +------------+------------+
-                                                                |
-                                             Raw JSON Snapshot  |  (Offline Fallback)
-                                             (data/raw/*.json)  v
-                                                   +-------------------------+
-                                                   |  Pydantic v2 Validator  |
-                                                   |    & Quarantine Gate    |
-                                                   |   (src/validator.py)    |
-                                                   +-----+-------------+-----+
-                                                         |             |
-                                        Valid Records    |             |  Corrupt / Missing
-                                                         v             v  HP, Type, or Rarity
-                                           +-------------------+   +-----------------------+
-                                           |  Apache Parquet   |   |  Quarantine Audit Log |
-                                           | (data/processed/) |   | (quarantine_log.json) |
-                                           +---------+---------+   +-----------+-----------+
-                                                     |                         |
-                                                     +------------+------------+
-                                                                  |
-                                                                  v
-                                                   +-------------------------+
-                                                   |  FastAPI REST Layer     |
-                                                   |  (X-API-Key Protected)  |
-                                                   |      (src/api.py)       |
-                                                   +-------------------------+
+```mermaid
+flowchart TD
+    A["🌐 TCGdex REST API<br/>(api.tcgdex.net/v2/en)"] -->|"Async HTTPX Ingestion"| B["⚙️ Ingestion Connector<br/>(src/connector.py)"]
+    B -.->|"Offline Fallback Snapshot"| C["📄 Raw JSON Cache<br/>(data/raw/*.json)"]
+    C -.-> B
+    B -->|"Raw Card Payloads"| D{"🛡️ Pydantic v2 Validator<br/>& Quarantine Gate<br/>(src/validator.py)"}
+    D -->|"Valid Schema & Derived Metrics"| E["📦 Apache Parquet Store<br/>(data/processed/*.parquet)"]
+    D -->|"Corrupt / Missing HP, Type, Rarity"| F["🚨 Quarantine Audit Log<br/>(quarantine_log.json)"]
+    E -->|"Sub-250ms Columnar Queries"| G["🚀 FastAPI REST Layer<br/>(X-API-Key Protected)<br/>(src/api.py)"]
+    F -->|"Audit Inspection"| G
+    G -->|"JSON Responses"| H["🧪 Postman Suite & Client Apps"]
+
+    style A fill:#1e293b,stroke:#38bdf8,stroke-width:2px,color:#f8fafc
+    style B fill:#0f172a,stroke:#10b981,stroke-width:2px,color:#f8fafc
+    style D fill:#31102f,stroke:#f43f5e,stroke-width:2px,color:#f8fafc
+    style E fill:#0c4a6e,stroke:#38bdf8,stroke-width:2px,color:#f8fafc
+    style F fill:#450a0a,stroke:#ef4444,stroke-width:2px,color:#f8fafc
+    style G fill:#064e3b,stroke:#34d399,stroke-width:2px,color:#f8fafc
 ```
 
 ---
