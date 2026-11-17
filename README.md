@@ -117,7 +117,8 @@ tests/test_api.py::test_unauthorized_request_blocked PASSED              [ 66%]
 tests/test_api.py::test_validator_quarantines_corrupt_pokemon_cards PASSED [100%]
 
 ============================== 3 passed in 0.97s ==============================
-
+```
+---
 
 ## Local Setup & Execution
 
