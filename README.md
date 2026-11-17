@@ -46,25 +46,17 @@ flowchart TD
 
 ## Repository Structure
 
-```text
-pokemon-tcg-fde-api/
-├── .github/workflows/ci.yaml      # Ruff lint & Pytest CI
-├── data/
-│   ├── raw/                       # Upstream JSON snapshots
-│   └── processed/                 # Clean Parquet & quarantine log
-├── postman/
-│   ├── Local_Dev.postman_environment.json
-│   └── Pokemon_TCG_FDE.postman_collection.json
-├── src/
-│   ├── api.py                     # FastAPI routes & X-API-Key auth
-│   ├── connector.py               # Async TCGdex REST client
-│   └── validator.py               # Pydantic v2 validation & quarantine
-├── tests/
-│   └── test_api.py                # Unit & integration test suite
-├── .gitignore
-├── README.md
-└── requirements.txt
-```
+| Path | Layer | Description |
+| :--- | :--- | :--- |
+| `.github/workflows/ci.yaml` | **CI/CD** | Automated Ruff static analysis and Pytest execution on every push and pull request |
+| `src/connector.py` | **Ingestion** | Asynchronous TCGdex REST API client with local raw JSON fallback caching |
+| `src/validator.py` | **Quality** | Pydantic v2 domain models, derived combat metrics, and record quarantine gate |
+| `src/api.py` | **Serving** | FastAPI REST service with `X-API-Key` auth and Parquet-backed analytics routes |
+| `tests/test_api.py` | **Testing** | Automated unit and integration tests covering health, auth rejection (`401`), and quarantine |
+| `postman/` | **API Suite** | Portable Postman v2.1 collection (`Pokemon_TCG_FDE.postman_collection.json`) & environment |
+| `data/raw/` | **Bronze Layer** | Raw upstream JSON snapshots (`{set_id}.json`) |
+| `data/processed/` | **Silver/Gold Layer** | Clean columnar Apache Parquet files (`{set_id}.parquet`) and `quarantine_log.json` |
+| `requirements.txt` | **Dependencies** | Pinned runtime and testing packages (`fastapi`, `pydantic`, `pyarrow`, `httpx`, `pytest`) |
 
 ---
 
@@ -132,9 +124,9 @@ curl -X POST "http://127.0.0.1:8000/v1/sync/set/base1?limit=40" -H "X-API-Key: f
 curl -X GET "http://127.0.0.1:8000/v1/sets/base1/analytics" -H "X-API-Key: fde-tcg-dev-key-2026"
 ```
 
-Author
-Ashutosh Tembhekar
+## Author
 
-Data Analytics & Forward-Deployed Data Engineering
-
-GitHub: @AshutoshTembhekar
+**Ashutosh Tembhekar**  
+*Data & Analytics Professional*  
+[![GitHub](https://img.shields.io/badge/GitHub-Profile-181717?style=flat&logo=github)](https://github.com/AshutoshTembhekar)
+[![Portfolio](https://img.shields.io/badge/Portfolio-Projects-blue?style=flat&logo=buffer)](https://github.com/AshutoshTembhekar?tab=repositories)
