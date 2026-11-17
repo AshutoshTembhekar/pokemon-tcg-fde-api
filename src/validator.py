@@ -1,4 +1,3 @@
-from typing import Any, List, Optional, Tuple
 import pandas as pd
 from pydantic import BaseModel, Field, ValidationError, field_validator
 
@@ -10,7 +9,7 @@ class CleanCardRecord(BaseModel):
     name: str
     category: str
     rarity: str
-    hp: Optional[int] = None
+    hp: int | None = None
     primary_type: str
     attack_count: int = Field(ge=0)
     max_attack_damage: int = Field(ge=0)
@@ -25,7 +24,7 @@ class CleanCardRecord(BaseModel):
         return v.strip()
 
 
-def _extract_numeric_damage(attacks: List[dict]) -> int:
+def _extract_numeric_damage(attacks: list[dict]) -> int:
     max_dmg = 0
     for atk in attacks or []:
         raw_dmg = str(atk.get("damage", "0"))
@@ -35,14 +34,14 @@ def _extract_numeric_damage(attacks: List[dict]) -> int:
     return max_dmg
 
 
-def validate_and_quarantine(raw_payload: dict) -> Tuple[pd.DataFrame, List[dict]]:
+def validate_and_quarantine(raw_payload: dict) -> tuple[pd.DataFrame, list[dict]]:
     """
     Validates raw TCGdex card objects, returning (clean_dataframe, quarantined_records).
     """
     set_id = raw_payload.get("set_id", "unknown")
     set_name = raw_payload.get("set_name", "Unknown")
-    clean_rows: List[dict] = []
-    quarantine_log: List[dict] = []
+    clean_rows: list[dict] = []
+    quarantine_log: list[dict] = []
 
     for raw in raw_payload.get("cards", []):
         card_id = raw.get("id", "MISSING_ID")

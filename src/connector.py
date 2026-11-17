@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+
 import httpx
 
 BASE_URL = "https://api.tcgdex.net/v2/en"
