@@ -123,7 +123,6 @@ curl -X POST "http://127.0.0.1:8000/v1/sync/set/base1?limit=40" -H "X-API-Key: f
 # Query aggregated set KPIs
 curl -X GET "http://127.0.0.1:8000/v1/sets/base1/analytics" -H "X-API-Key: fde-tcg-dev-key-2026"
 ```
-
 ## Author
 
 **Ashutosh Tembhekar**  
