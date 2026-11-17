@@ -110,7 +110,7 @@ py -m pip install -r requirements.txt
 py -m ruff check src/ tests/
 py -m pytest tests/ -v
 
-# 3. Launch the FastAPI server (Swagger UI available at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs))
+# 3. Launch the FastAPI server (Swagger UI available at http://127.0.0.1:8000/docs)
 py -m uvicorn src.api:app --reload --port 8000
 ```
 
