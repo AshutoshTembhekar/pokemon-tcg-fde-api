@@ -122,6 +122,32 @@ tests/test_api.py::test_validator_quarantines_corrupt_pokemon_cards PASSED [100%
 ```
 ---
 
+### 2. End-to-End Live TCGdex Ingestion & Analytics (`base1` Set)
+Executing the 6-step smoke test against the live TCGdex upstream API (`POST /v1/sync/set/base1?limit=15`) validates schema contracts, persists clean rows to `data/processed/base1.parquet`, and computes expansion KPIs:
+
+```json
+{
+  "1_health_check": {
+    "status": "healthy",
+    "service": "pokemon-tcg-fde-api"
+  },
+  "2_unauthenticated_request_status": 401,
+  "3_sync_response": {
+    "set_id": "base1",
+    "set_name": "Base Set",
+    "ingested_clean_count": 15,
+    "quarantined_count": 0,
+    "parquet_artifact": "data\\processed\\base1.parquet"
+  },
+  "4_filtered_query_matched_count": 13,
+  "5_analytics_rarity_distribution": {
+    "Rare": 15
+  },
+  "6_quarantine_audit_count": 0
+}
+```
+---
+
 ## Local Setup & Execution
 
 ```powershell
