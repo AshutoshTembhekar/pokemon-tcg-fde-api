@@ -1,9 +1,10 @@
 import json
 import os
 from pathlib import Path
-from typing import Optional
+
 import pandas as pd
 from fastapi import Depends, FastAPI, Header, HTTPException, Query, status
+
 from src.connector import fetch_set_cards
 from src.validator import validate_and_quarantine
 
@@ -20,7 +21,7 @@ app = FastAPI(
 )
 
 
-def verify_api_key(x_api_key: Optional[str] = Header(default=None)):
+def verify_api_key(x_api_key: str | None = Header(default=None)):
     if x_api_key != EXPECTED_API_KEY:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -61,8 +62,8 @@ async def sync_set(set_id: str, limit: int = Query(default=50, ge=1, le=200)):
 @app.get("/v1/cards", dependencies=[Depends(verify_api_key)])
 def query_cards(
     set_id: str = Query(default="base1"),
-    primary_type: Optional[str] = Query(default=None),
-    min_hp: Optional[int] = Query(default=None, ge=1),
+    primary_type: str | None = Query(default=None),
+    min_hp: int | None = Query(default=None, ge=1),
     limit: int = Query(default=20, ge=1, le=100),
 ):
     parquet_path = PROCESSED_DIR / f"{set_id}.parquet"
