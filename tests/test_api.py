@@ -1,4 +1,5 @@
 from fastapi.testclient import TestClient
+
 from src.api import EXPECTED_API_KEY, app
 from src.validator import validate_and_quarantine
 
